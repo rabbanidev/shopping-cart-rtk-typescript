@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import {
   Sheet,
   SheetContent,
@@ -12,15 +13,29 @@ import {
   HiOutlineTrash,
 } from 'react-icons/hi';
 import { Button } from './ui/button';
+import { useAppDispatch, useAppSelector } from '@/redux/app/hooks';
 import { IProduct } from '@/types/globalTypes';
+import {
+  addToCart,
+  quantityDecrease,
+  removeFromCart,
+} from '@/redux/feature/cart/cartSlice';
 
 export default function Cart() {
-  //! Dummy data
+  const dispatch = useAppDispatch();
+  const { products, total } = useAppSelector((state) => state.cart);
 
-  const products: IProduct[] = [];
-  const total = 0;
+  const increaseCartHandler = (product: IProduct) => {
+    dispatch(addToCart(product));
+  };
 
-  //! **
+  const decreaseCartHandler = (product: IProduct) => {
+    dispatch(quantityDecrease(product));
+  };
+
+  const removeFromCartHandler = (product: IProduct) => {
+    dispatch(removeFromCart(product));
+  };
 
   return (
     <Sheet>
@@ -52,15 +67,16 @@ export default function Cart() {
                 </p>
               </div>
               <div className="border-l pl-5 flex flex-col justify-between">
-                <Button>
+                <Button onClick={() => increaseCartHandler(product)}>
                   <HiOutlinePlus size="20" />
                 </Button>
-                <Button>
+                <Button onClick={() => decreaseCartHandler(product)}>
                   <HiMinus size="20" />
                 </Button>
                 <Button
                   variant="destructive"
                   className="bg-red-500 hover:bg-red-400"
+                  onClick={() => removeFromCartHandler(product)}
                 >
                   <HiOutlineTrash size="20" />
                 </Button>

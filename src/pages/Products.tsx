@@ -3,11 +3,19 @@ import { Label } from '@/components/ui/label';
 import { Slider } from '@/components/ui/slider';
 import { Switch } from '@/components/ui/switch';
 import { useToast } from '@/components/ui/use-toast';
+import { useAppDispatch, useAppSelector } from '@/redux/app/hooks';
+import {
+  changePriceRange,
+  statusToggled,
+} from '@/redux/feature/products/productsSlice';
 import { IProduct } from '@/types/globalTypes';
 import { useEffect, useState } from 'react';
 
 export default function Products() {
+  const dispatch = useAppDispatch();
+  const { priceRange, status } = useAppSelector((state) => state.products);
   const [data, setData] = useState<IProduct[]>([]);
+
   useEffect(() => {
     fetch('./data.json')
       .then((res) => res.json())
@@ -16,19 +24,18 @@ export default function Products() {
 
   const { toast } = useToast();
 
-  //! Dummy Data
-
-  const status = true;
-  const priceRange = 100;
-
-  //! **
-
+  // Set price range
   const handleSlider = (value: number[]) => {
-    console.log(value);
+    dispatch(changePriceRange(value[0]));
   };
 
-  let productsData;
+  // handle toggled
+  const handleStatusToggled = () => {
+    dispatch(statusToggled());
+  };
 
+  // filtering part
+  let productsData;
   if (status) {
     productsData = data.filter(
       (item) => item.status === true && item.price < priceRange
@@ -45,7 +52,7 @@ export default function Products() {
         <div>
           <h1 className="text-2xl uppercase">Availability</h1>
           <div className="flex items-center space-x-2 mt-3">
-            <Switch id="in-stock" />
+            <Switch id="in-stock" onClick={handleStatusToggled} />
             <Label htmlFor="in-stock">In stock</Label>
           </div>
         </div>
