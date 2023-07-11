@@ -8,7 +8,7 @@ interface IProductFilter {
 
 const initialState: IProductFilter = {
   status: false,
-  priceRange: 150,
+  priceRange: 200000,
 };
 
 const products = createSlice({
