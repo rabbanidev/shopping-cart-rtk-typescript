@@ -1,11 +1,12 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import ProductReview from '@/components/ProductReview';
 import { Button } from '@/components/ui/button';
-import { useGetProductQuery } from '@/redux/api/apiSlice';
+import { useGetProductQuery } from '@/redux/feature/products/productsApi';
 import { useParams } from 'react-router-dom';
 
 export default function ProductDetails() {
   const { id } = useParams();
-  const { data: product } = useGetProductQuery(id);
+  const { data: product } = useGetProductQuery(id as string);
 
   return (
     <>
@@ -24,7 +25,7 @@ export default function ProductDetails() {
           <Button>Add to cart</Button>
         </div>
       </div>
-      <ProductReview />
+      <ProductReview id={id!} />
     </>
   );
 }

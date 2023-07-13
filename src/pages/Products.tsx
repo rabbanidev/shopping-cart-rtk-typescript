@@ -3,14 +3,13 @@ import { Label } from '@/components/ui/label';
 import { Slider } from '@/components/ui/slider';
 import { Switch } from '@/components/ui/switch';
 import { useToast } from '@/components/ui/use-toast';
-import { useGetProductsQuery } from '@/redux/api/apiSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/app/hooks';
+import { useGetProductsQuery } from '@/redux/feature/products/productsApi';
 import {
   changePriceRange,
   statusToggled,
 } from '@/redux/feature/products/productsSlice';
 import { IProduct } from '@/types/globalTypes';
-import { useEffect, useState } from 'react';
 
 export default function Products() {
   const { data, isLoading, error } = useGetProductsQuery(undefined);
